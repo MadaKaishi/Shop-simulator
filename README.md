@@ -33,25 +33,25 @@ Faktura:
 - całkowita cena wszystkich produktów;
 
 Osoba:
--imię
--nazwisko
--id
+- imię
+- nazwisko
+- id
 
 Klient:
--lista produktów
--pieniądze
--czy klient już w sklepie
+- lista produktów
+- pieniądze
+- czy klient już w sklepie
 
 
 Pracownik:
--nr kasjera
--czy pracownik ma przerwę (raz na jakiś czas)
+- nr kasjera
+- czy pracownik ma przerwę (raz na jakiś czas)
 
 Produkt:
--nazwa
--id
--ilość w sklepie
--podatek
+- nazwa
+- id
+- ilość w sklepie
+- podatek
 
 Arg wywołania: liczba kas,liczba pracowników, liczba tur
 
