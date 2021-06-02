@@ -3,7 +3,7 @@
 #include "Pracownik.h"
 using namespace std;
 
-Pracownik::Pracownik(string n,string s, int i, int r): Osoba(n,s,i)
+Pracownik::Pracownik(string n, string s, int r) : Osoba(n, s)
 {
     nr = r;
     brea = false;
@@ -26,5 +26,5 @@ bool Pracownik::IsOnBreak(void)
 
 Pracownik::~Pracownik(void)
 {
-    cout<<name<<" "<<surname<<" kończy zmianę.\n";
+    cout << name << " " << surname << " kończy zmianę.\n";
 }
