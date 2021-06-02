@@ -4,13 +4,14 @@
 
 using namespace std;
 
-class Pracownik: public Osoba
+class Pracownik : public Osoba
 {
 private:
     int nr;
     bool brea;
+
 public:
-    Pracownik(string, string, int, int);
+    Pracownik(string, string, int);
     ~Pracownik();
     void GetBreak();
     void ReturnFromBreak();

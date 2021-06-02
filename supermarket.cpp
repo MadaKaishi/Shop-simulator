@@ -18,8 +18,10 @@ void Supermarket::entering_phaze()
 
 void Supermarket::add_client()
 {
-    int client_index = random_generator() % (klienci.size() - 1);
+    int client_index = random_generator() % (klienci.size());
     aktywni_klienci.push_back(klienci[client_index]);
+    cout << "Klient: " << klienci[client_index].GetName() << " " << klienci[client_index].GetSurname() << " wchodzi do sklepu." << endl;
+    klienci.erase(klienci.begin() + client_index);
 }
 
 int Supermarket::random_generator()
@@ -37,13 +39,15 @@ void Supermarket::load_clients_from_file()
         std::string line;
         while (getline(file, line))
         {
-            int a, b, c;
+            string nam, sur, adr, code, tow, num;
+            int mon;
+            bool fac;
             std::istringstream iss(line);
-            iss >> a >> b >> c;
-            cout << a;
-            cout << b;
-            cout << c;
+            iss >> nam >> sur >> mon >> fac >> adr >> num >> code >> tow;
+            adr = adr + " " + num;
+            Klient new_client(nam, sur, mon, fac, adr, code, tow);
+            klienci.push_back(new_client);
         }
         file.close();
-    };
+    }
 }

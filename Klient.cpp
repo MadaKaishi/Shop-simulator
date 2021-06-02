@@ -8,7 +8,6 @@ Klient::Klient(string n, string s, int m, bool b, string ad, string po, string t
 {
     money = m;
     in_shop = true;
-    cout << "Klient: " << name << " " << surname << " wchodzi do sklepu\n";
     if (b == true)
     {
         adress = ad;
@@ -20,7 +19,6 @@ Klient::Klient(string n, string s, int m, bool b, string ad, string po, string t
 Klient::~Klient()
 {
     in_shop = false;
-    cout << "Klient: " << name << " " << surname << " wychodzi ze sklepu\n";
 }
 
 void Klient::AddToPurchaseList(string s)
@@ -68,6 +66,17 @@ bool Klient::IsInShop()
     return in_shop;
 }
 
-void Klient::GoToCheckout()
+string Klient::GetAdress()
 {
+    return adress;
+}
+
+string Klient::GetPostCode()
+{
+    return post_code;
+}
+
+string Klient::GetTown()
+{
+    return town;
 }

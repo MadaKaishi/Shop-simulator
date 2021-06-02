@@ -20,7 +20,7 @@ private:
     string town;
 
 public:
-    Klient(string, string, int, int, bool, string = "", string = "", string = "");
+    Klient(string, string, int, bool, string = "", string = "", string = "");
     ~Klient();
 
     void AddToPurchaseList(string);
@@ -29,6 +29,9 @@ public:
     void AddToCart();
     vector<string> GetCart();
     void ReadCart();
+    string GetAdress();
+    string GetPostCode();
+    string GetTown();
 
     int GetMoney();
     bool IsInShop();

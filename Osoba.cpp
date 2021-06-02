@@ -4,11 +4,10 @@
 
 using namespace std;
 
-Osoba::Osoba(string n, string s, int i)
+Osoba::Osoba(string n, string s)
 {
     name = n;
     surname = s;
-    id = i;
 }
 
 string Osoba::GetName(void)
@@ -20,9 +19,3 @@ string Osoba::GetSurname(void)
 {
     return surname;
 }
-
-int Osoba::GetId(void)
-{
-    return id;
-}
-

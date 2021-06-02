@@ -7,7 +7,6 @@
 #include "Klient.h"
 #include "Pracownik.h"
 #include "product.h"
-#include "Kasa.h"
 #include "bill_class.h"
 
 using namespace std;
@@ -18,7 +17,6 @@ class Supermarket
     vector<Klient> aktywni_klienci;
     vector<Pracownik> pracownicy;
     vector<Product> produkty;
-    vector<Kasa> kasy;
     int liczba_kas, liczba_tur;
 
 public:

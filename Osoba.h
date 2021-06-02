@@ -14,7 +14,6 @@ public:
     Osoba(string, string);
     string GetName(void);
     string GetSurname(void);
-    int GetId(void);
 };
 
 #endif
