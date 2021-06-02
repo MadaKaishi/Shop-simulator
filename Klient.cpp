@@ -4,7 +4,7 @@
 #include "Klient.h"
 using namespace std;
 
-Klient::Klient(string n, string s, int i, int m, bool b, string ad, string po, string t) : Osoba(n, s, i)
+Klient::Klient(string n, string s, int m, bool b, string ad, string po, string t) : Osoba(n, s)
 {
     money = m;
     in_shop = true;
