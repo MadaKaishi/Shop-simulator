@@ -26,7 +26,7 @@ public:
         this->liczba_tur = liczba_tur;
     }
     void load_clients_from_file();
-    void load_items_from_file();
+    void load_products_from_file();
     void save_to_file();
     void add_client();
     void entering_phaze();

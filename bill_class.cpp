@@ -102,14 +102,14 @@ void Bill::display_items_list()
         double price, total_price, tax;
         name = item->name;
         amount = item->amount;
-        price = item->price;
         tax = item->tax_class / 100;
-        total_price = price * amount + price * amount * tax;
+        price = item->price + item->price * tax;
+        total_price = price * amount;
         cout << setw(5) << left << i + 1 << setw(4) << left << "|"
              << setw(34) << left << name << setw(4) << left << "|"
              << setw(9) << right << amount << setw(4) << right << "|"
-             << setw(14) << right << setprecision(2) << price << setw(4) << right << "|"
-             << setw(25) << right << total_price << endl;
+             << setw(14) << right << price << setw(4) << right << "|"
+             << setw(25) << right << setprecision(2) << total_price << endl;
     }
     for (int i = 0; i < 104; i++)
     {

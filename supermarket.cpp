@@ -26,7 +26,7 @@ void Supermarket::add_client()
 
 int Supermarket::random_generator()
 {
-    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+    unsigned long int seed = chrono::system_clock::now().time_since_epoch().count();
     mt19937 generator(seed);
     return generator();
 }
@@ -40,13 +40,44 @@ void Supermarket::load_clients_from_file()
         while (getline(file, line))
         {
             string nam, sur, adr, code, tow, num;
-            int mon;
+            int mon, ite;
             bool fac;
             std::istringstream iss(line);
-            iss >> nam >> sur >> mon >> fac >> adr >> num >> code >> tow;
+            iss >> nam >> sur >> mon >> fac >> adr >> num >> code >> tow >> ite;
             adr = adr + " " + num;
             Klient new_client(nam, sur, mon, fac, adr, code, tow);
+            for (int i = 0; i < ite; i++)
+            {
+                int amount = abs((random_generator() % 10)) + 2;
+                int product_index = random_generator() % (produkty.size());
+                new_client.AddToPurchaseList(produkty[product_index], amount);
+            }
+            tuple<Product, int> x = new_client.ReadFromPurchaseList()[0];
+            Product *a = &get<0>(x);
+            int b = get<1>(x);
+            cout << b << endl;
+            cout << a->name << endl;
             klienci.push_back(new_client);
+        }
+        file.close();
+    }
+}
+
+void Supermarket::load_products_from_file()
+{
+    std::ifstream file("itemtest.txt");
+    if (file.is_open())
+    {
+        std::string line;
+        while (getline(file, line))
+        {
+            string name;
+            double tax, price;
+            int amount;
+            std::istringstream iss(line);
+            iss >> name >> amount >> tax >> price;
+            Product new_product(price, tax, name, amount);
+            produkty.push_back(new_product);
         }
         file.close();
     }

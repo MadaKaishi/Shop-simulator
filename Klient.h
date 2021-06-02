@@ -3,15 +3,17 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <tuple>
 #include "Osoba.h"
+#include "product.h"
 
 using namespace std;
 
 class Klient : public Osoba
 {
 private:
-    vector<string> listazak;
-    vector<string> items;
+    vector<tuple<Product, int>> listazak;
+    vector<tuple<Product, int>> items;
     int money;
     bool in_shop;
     bool want_facture;
@@ -23,11 +25,11 @@ public:
     Klient(string, string, int, bool, string = "", string = "", string = "");
     ~Klient();
 
-    void AddToPurchaseList(string);
-    vector<string> ReadFromPurchaseList();
+    void AddToPurchaseList(Product, int);
+    vector<tuple<Product, int>> ReadFromPurchaseList();
     void ReadPList();
     void AddToCart();
-    vector<string> GetCart();
+    vector<tuple<Product, int>> GetCart();
     void ReadCart();
     string GetAdress();
     string GetPostCode();

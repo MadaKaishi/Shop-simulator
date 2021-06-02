@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <tuple>
 #include "Klient.h"
 using namespace std;
 
@@ -21,12 +22,12 @@ Klient::~Klient()
     in_shop = false;
 }
 
-void Klient::AddToPurchaseList(string s)
+void Klient::AddToPurchaseList(Product p, int s)
 {
-    listazak.push_back(s);
+    listazak.push_back(make_tuple(p, s));
 }
 
-vector<string> Klient::ReadFromPurchaseList()
+vector<tuple<Product, int>> Klient::ReadFromPurchaseList()
 {
     return listazak;
 }
@@ -39,11 +40,11 @@ void Klient::AddToCart()
     listazak.erase(i);
 }
 
-vector<string> Klient::GetCart()
+vector<tuple<Product, int>> Klient::GetCart()
 {
     return items;
 }
-
+/*
 void Klient::ReadCart()
 {
     for (auto i = items.begin(); i != items.end(); ++i)
@@ -55,7 +56,7 @@ void Klient::ReadPList()
     for (auto i = listazak.begin(); i != listazak.end(); ++i)
         cout << *i << ", ";
 }
-
+*/
 int Klient::GetMoney()
 {
     return money;
