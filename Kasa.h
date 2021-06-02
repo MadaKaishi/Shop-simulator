@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <list>
-//#include "Klient.h"
+#include "Klient.h"
 using namespace std;
 
 class Kasa
@@ -11,7 +11,7 @@ class Kasa
 public:
   int num, money, tury_pracy, tury_przerwy;
   bool isopen;
-  //std::list<Klient> queue;
+  std::list<Klient> queue;
 
   Kasa();
   Kasa(int n, int cash, bool o);
@@ -23,7 +23,7 @@ public:
   void setmoney(int);
   void openKasa();
   void closeKasa();
-  //void addtoQueue(Klient);
+  void addtoQueue(Klient);
   void removefromQueue();
   void increment_tury_pracy();
   void clear_tury_pracy();
