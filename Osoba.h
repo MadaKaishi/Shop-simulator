@@ -1,3 +1,5 @@
+#ifndef OSOBA_H
+#define OSOBA_H
 #include <iostream>
 #include <string>
 using namespace std;
@@ -5,13 +7,14 @@ using namespace std;
 class Osoba
 {
 protected:
-string name;
-string surname;
-int id;
+    string name;
+    string surname;
 
 public:
-Osoba(string,string,int);
-string GetName(void);
-string GetSurname(void);
-int GetId(void);
+    Osoba(string, string);
+    string GetName(void);
+    string GetSurname(void);
+    int GetId(void);
 };
+
+#endif

@@ -17,7 +17,7 @@ public:
         price = 0;
         name = "";
     }
-    Product(int a, double p, double t, string n)
+    Product(double p, double t, string n, int a = 0)
     {
         amount = a;
         price = p;

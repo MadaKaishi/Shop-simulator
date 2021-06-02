@@ -159,7 +159,7 @@ void Bill::add_item(string name, int amount, double price, double tax)
     }
     if (!item_added)
     {
-        Product new_item(amount, price, tax, name);
+        Product new_item(price, tax, name, amount);
         items_list.push_back(new_item);
     }
 }

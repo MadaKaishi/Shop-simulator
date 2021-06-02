@@ -11,13 +11,12 @@ Kasa::Kasa(int n, unsigned long int cash, bool o)
 {
     num = n;
     money = cash;
-    isopen = o;
-    queue = { };
+    isopen = rand() % 2;
+    queue = {};
 }
 
 Kasa::~Kasa()
 {
-
 }
 
 int Kasa::getnum()
@@ -66,6 +65,7 @@ void Kasa::removefromQueue()
     queue.pop_front();
 }
 
-int main(){
+int main()
+{
     return 0;
 }
