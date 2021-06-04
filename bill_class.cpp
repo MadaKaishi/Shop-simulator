@@ -62,7 +62,7 @@ void Bill::display_items_list()
          << setw(34) << left << "Product name:" << setw(4) << left << "|"
          << setw(12) << left << "Quantity:" << setw(4) << left << "|"
          << setw(14) << left << "Unit price:" << setw(4) << left << "|"
-         << setw(15) << right << "Total Price (with VAT):" << endl;
+         << setw(15) << right << "Total Price:" << endl;
     for (int i = 0; i < 104; i++)
     {
         cout << "-";
@@ -93,13 +93,14 @@ void Bill::display_items_list()
 
 void Bill::display_bill()
 {
+    string spaces = "                                               ";
     string seller_name = get_seller_name();
     string town_zip = get_seller_zip() + ", " + get_seller_town();
     cout << "\n\n\n";
     cout << "Bill nr and date: " << get_number() << "  " << get_date() << "\n\n";
-    cout << string((80 - get_seller_name().size()) / 2, ' ') << seller_name << endl;
-    cout << string((80 - get_seller_name().size()) / 2, ' ') << get_seller_street() << endl;
-    cout << string((80 - get_seller_name().size()) / 2, ' ') << town_zip << "\n";
+    cout << spaces << seller_name << endl;
+    cout << spaces << get_seller_street() << endl;
+    cout << spaces << town_zip << "\n";
     cout << "Counter number: " << setw(60) << left << get_counter_number() << "\n\n";
     display_items_list();
     cout << fixed;
@@ -206,13 +207,13 @@ void Facture::display_items_list()
 {
     cout << fixed;
     cout << setw(5) << left << "No." << setw(4) << left << "|"
-         << setw(34) << left << "Product name:" << setw(4) << left << "|"
-         << setw(12) << left << "Quantity:" << setw(4) << left << "|"
+         << setw(30) << left << "Product name:" << setw(4) << left << "|"
+         << setw(11) << left << "Quantity:" << setw(4) << left << "|"
          << setw(14) << left << "Unit price:" << setw(4) << left << "|"
-         << setw(14) << left << "Netto price:" << setw(4) << left << "|"
-         << setw(14) << left << "Unit price:" << setw(4) << left << "|"
-         << setw(15) << right << "Total Price (with VAT):" << endl;
-    for (int i = 0; i < 104; i++)
+         << setw(15) << left << "Netto price:" << setw(4) << left << "|"
+         << setw(8) << left << "Tax(%):" << setw(4) << left << "|"
+         << setw(16) << left << "Brutto price:" << endl;
+    for (int i = 0; i < 120; i++)
     {
         cout << "-";
     }
@@ -223,17 +224,19 @@ void Facture::display_items_list()
         Product item = get<0>(items[i]);
         string name = item.name;
         int amount = get<1>(items[i]);
-        double price, total_price, tax;
+        double unit_price = item.price, brutto_price, netto_price, tax;
         tax = item.tax_class / 100;
-        price = item.price + item.price * tax;
-        total_price = price * amount;
+        netto_price = amount * unit_price;
+        brutto_price = netto_price + netto_price * tax;
         cout << setw(5) << left << i + 1 << setw(4) << left << "|"
-             << setw(34) << left << name << setw(4) << left << "|"
-             << setw(9) << right << amount << setw(4) << right << "|"
-             << setw(14) << right << setprecision(2) << price << setw(4) << right << "|"
-             << setw(25) << right << setprecision(2) << total_price << endl;
+             << setw(30) << left << name << setw(1) << right << "|"
+             << setw(11) << right << amount << setw(4) << right << "|"
+             << setw(14) << right << setprecision(2) << unit_price << setw(4) << right << "|"
+             << setw(15) << right << setprecision(2) << netto_price << setw(4) << right << "|"
+             << setw(8) << right << setprecision(0) << item.tax_class << setw(4) << right << "|"
+             << setw(16) << right << setprecision(2) << brutto_price << endl;
     }
-    for (int i = 0; i < 104; i++)
+    for (int i = 0; i < 120; i++)
     {
         cout << "-";
     }
@@ -243,13 +246,13 @@ void Facture::display_items_list()
 void Facture::display_facture()
 {
     cout << "\n\n\n";
-    cout << "Facture nr/date: " << setw(60) << left << get_id() << get_place_of_issue() << " " << get_date() << "\n\n";
-    cout << setw(60) << left << "Seller:"
+    cout << "Facture nr/date: " << setw(78) << left << get_id() << get_place_of_issue() << " " << get_date() << "\n\n";
+    cout << setw(95) << left << "Seller:"
          << "Buyer:" << endl;
-    cout << setw(60) << left << get_seller_name() << get_buyer_name() << endl;
-    cout << setw(60) << left << get_seller_street() << get_buyer_street() << endl;
-    cout << get_seller_zip() << ", " << setw(52) << left << get_seller_town() << get_buyer_zip() << ", " << get_buyer_town() << "\n\n\n";
+    cout << setw(95) << left << get_seller_name() << get_buyer_name() << endl;
+    cout << setw(95) << left << get_seller_street() << get_buyer_street() << endl;
+    cout << get_seller_zip() << ", " << setw(87) << left << get_seller_town() << get_buyer_zip() << ", " << get_buyer_town() << "\n\n\n";
     display_items_list();
     cout << fixed;
-    cout << setw(84) << right << "TOTAL: " << setw(16) << right << setprecision(2) << brutto_price() << " PLN" << endl;
+    cout << setw(100) << right << "TOTAL: " << setw(16) << right << setprecision(2) << brutto_price() << " PLN" << endl;
 }

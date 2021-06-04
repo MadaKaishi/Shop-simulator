@@ -64,6 +64,7 @@ void Kasa::openKasa()
 void Kasa::closeKasa()
 {
     isopen = false;
+    cout << "Zamykanie kasy nr " << num << endl;
 }
 
 int Kasa::get_tury_pracy()
@@ -126,7 +127,6 @@ void Kasa::change_Kasa_status()
     {
         closeKasa();
         clear_tury_pracy();
-        cout << "Kasa nr " << getnum() << " jest zamykana" << endl;
     }
     if (break_ended())
     {

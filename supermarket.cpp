@@ -30,8 +30,6 @@ void Supermarket::add_kasy()
         }
         Kasa new_counter(num, money, isopen);
         kasy.push_back(new_counter);
-        // bool open = kasy[i].isKasaopened();
-        // cout << open << endl;
     }
     if (opened_kasy == 0)
     {
@@ -92,11 +90,6 @@ void Supermarket::load_clients_from_file()
             adr = adr + " " + num;
             Klient new_client(nam, sur, mon, ite, fac, adr, code, tow);
             MakeNewPurchaseList(new_client);
-            // tuple<Product, int> x = new_client.ReadFromPurchaseList()[0];
-            // Product *a = &get<0>(x);
-            // int b = get<1>(x);
-            // cout << b << endl;
-            // cout << a->name << endl;
             klienci.push_back(new_client);
         }
         file.close();
@@ -175,18 +168,21 @@ void Supermarket::buying_phaze()
     {
         if (c.isKasaopened())
         {
+            c.increment_tury_pracy();
             if (queue.size() > 0)
             {
                 Klient *client = &queue.front();
                 if (client->WantFacture() == 1)
                 {
                     //to co chce fakture
+                    cout << "Drukowanie faktury dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
                     Facture f(c.getnum(), client->GetCart(), client->GetAdress(), client->GetPostCode(), client->GetTown(), client->GetName() + " " + client->GetSurname());
                     f.display_facture();
                 }
                 else
                 {
                     //to co chce paragon
+                    cout << "Drukowanie paragonu dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
                     Bill b(c.getnum(), client->GetCart());
                     b.display_bill();
                 }
@@ -195,7 +191,6 @@ void Supermarket::buying_phaze()
                 klienci.push_back(*client);
                 queue.pop_front();
             }
-            c.increment_tury_pracy();
         }
         else
         {
