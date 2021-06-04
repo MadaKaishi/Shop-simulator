@@ -14,7 +14,7 @@ void Supermarket::entering_phaze()
 {
     add_client();
     cout << "Ilość klientów w sklepie: " << aktywni_klienci.size() + queue.size() << endl;
-    cout << "Ilość otwartych kas: " << opened_kasy << endl;
+    cout << "Ilość otwartych kas: " << get_openedkasy() << endl;
 }
 
 void Supermarket::add_kasy()
@@ -42,6 +42,14 @@ void Supermarket::add_kasy()
 
 int Supermarket::get_openedkasy()
 {
+    int i = 0;
+    for (Kasa c : kasy)
+    {
+        if (c.isKasaopened() == 1)
+        {
+            i++;
+        }
+    }
     return opened_kasy;
 }
 
@@ -137,30 +145,27 @@ bool Supermarket::is_there_product(string name, int number)
 
 void Supermarket::choosing_phaze()
 {
-    int i = 0;
-    for (Klient &c : aktywni_klienci)
+    vector<int> client_to_move_to_queue;
+    string name;
+    int amount;
+    for (long long unsigned int i = 0; i < aktywni_klienci.size(); i++)
     {
-        // cout << "lista zak:\n";
-        // c.ReadPList();
-        // cout << "\nwózek:\n";
-        // c.ReadCart();
-        string name = get<0>(c.ReadFromPurchaseList()[0]).name;
-        int amount = get<1>(c.ReadFromPurchaseList()[0]);
+        name = get<0>(aktywni_klienci[i].ReadFromPurchaseList()[0]).name;
+        amount = get<1>(aktywni_klienci[i].ReadFromPurchaseList()[0]);
         if (is_there_product(name, amount))
         {
-            c.AddToCart();
-            cout << c.GetName() << " " << c.GetSurname() << " dodał do koszyka " << amount << " " << name << endl;
+            aktywni_klienci[i].AddToCart();
+            cout << aktywni_klienci[i].GetName() << " " << aktywni_klienci[i].GetSurname() << " dodał do koszyka " << amount << " " << name << endl;
         }
         else
         {
             cout << "Nie ma wystarczającej ilości danego produktu - " << name << endl;
-            c.RemoveFromPurchaseList();
+            aktywni_klienci[i].RemoveFromPurchaseList();
         }
-        if (c.ReadFromPurchaseList().size() == 0)
+        if (aktywni_klienci[i].ReadFromPurchaseList().size() == 0)
         {
             move_to_queue(i);
         }
-        i += 1;
     }
 }
 

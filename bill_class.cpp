@@ -37,7 +37,7 @@ double Bill::brutto_price()
     {
         Product item = get<0>(items[i]);
         double tax;
-        int amount = item.amount;
+        int amount = get<1>(items[i]);
         double price = item.price;
         tax = item.tax_class / 100;
         total_price += amount * (price + (price * tax));
@@ -185,7 +185,7 @@ string Facture::get_place_of_issue()
     return place_of_issue;
 }
 
-Facture::Facture(int counter_number, vector<tuple<Product, int>>, string buyer_street, string buyer_zip, string buyer_town, string buyer_name, string seller_street, string seller_zip, string seller_town, string seller_name)
+Facture::Facture(int counter_number, vector<tuple<Product, int>> items, string buyer_street, string buyer_zip, string buyer_town, string buyer_name, string seller_street, string seller_zip, string seller_town, string seller_name)
 {
     this->seller_name = seller_name;
     this->seller_street = seller_street;
@@ -202,6 +202,44 @@ Facture::Facture(int counter_number, vector<tuple<Product, int>>, string buyer_s
     previous_facture_number += 1;
 }
 
+void Facture::display_items_list()
+{
+    cout << fixed;
+    cout << setw(5) << left << "No." << setw(4) << left << "|"
+         << setw(34) << left << "Product name:" << setw(4) << left << "|"
+         << setw(12) << left << "Quantity:" << setw(4) << left << "|"
+         << setw(14) << left << "Unit price:" << setw(4) << left << "|"
+         << setw(14) << left << "Netto price:" << setw(4) << left << "|"
+         << setw(14) << left << "Unit price:" << setw(4) << left << "|"
+         << setw(15) << right << "Total Price (with VAT):" << endl;
+    for (int i = 0; i < 104; i++)
+    {
+        cout << "-";
+    }
+    cout << endl;
+    int items_list_size = items.size();
+    for (int i = 0; i < items_list_size; i++)
+    {
+        Product item = get<0>(items[i]);
+        string name = item.name;
+        int amount = get<1>(items[i]);
+        double price, total_price, tax;
+        tax = item.tax_class / 100;
+        price = item.price + item.price * tax;
+        total_price = price * amount;
+        cout << setw(5) << left << i + 1 << setw(4) << left << "|"
+             << setw(34) << left << name << setw(4) << left << "|"
+             << setw(9) << right << amount << setw(4) << right << "|"
+             << setw(14) << right << setprecision(2) << price << setw(4) << right << "|"
+             << setw(25) << right << setprecision(2) << total_price << endl;
+    }
+    for (int i = 0; i < 104; i++)
+    {
+        cout << "-";
+    }
+    cout << endl;
+}
+
 void Facture::display_facture()
 {
     cout << "\n\n\n";
@@ -213,5 +251,5 @@ void Facture::display_facture()
     cout << get_seller_zip() << ", " << setw(52) << left << get_seller_town() << get_buyer_zip() << ", " << get_buyer_town() << "\n\n\n";
     display_items_list();
     cout << fixed;
-    cout << setw(80) << right << "TOTAL: " << setw(12) << right << setprecision(2) << brutto_price() << " PLN" << endl;
+    cout << setw(84) << right << "TOTAL: " << setw(16) << right << setprecision(2) << brutto_price() << " PLN" << endl;
 }

@@ -83,7 +83,7 @@ void Kasa::increment_tury_pracy()
 
 bool Kasa::needs_break()
 {
-    if (tury_pracy >= 10)
+    if (tury_pracy >= 5)
     {
         return 1;
     }
@@ -95,7 +95,7 @@ bool Kasa::needs_break()
 
 bool Kasa::break_ended()
 {
-    if (tury_przerwy >= 5)
+    if (tury_przerwy >= 3)
     {
         return 1;
     }

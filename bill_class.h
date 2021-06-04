@@ -51,6 +51,7 @@ public:
     std::string get_buyer_name();
     std::string get_place_of_issue();
     void display_facture();
+    void display_items_list();
 };
 
 #endif
