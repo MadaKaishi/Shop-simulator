@@ -45,17 +45,17 @@ vector<tuple<Product, int>> Klient::GetCart()
     return items;
 }
 
-void Klient::ReadCart()
-{
-    for (auto i = 0; i < items.size(); ++i)
-        cout << get<0>(items[i]).name << ", ";
-}
+// void Klient::ReadCart()
+// {
+//     for (auto i = 0; i < items.size(); ++i)
+//         cout << get<0>(items[i]).name << ", ";
+// }
 
-void Klient::ReadPList()
-{
-    for (auto i = 0; i < listazak.size(); ++i)
-        cout << get<0>(listazak[i]).name << ", ";
-}
+// void Klient::ReadPList()
+// {
+//     for (auto i = 0; i < listazak.size(); ++i)
+//         cout << get<0>(listazak[i]).name << ", ";
+// }
 
 int Klient::GetMoney()
 {

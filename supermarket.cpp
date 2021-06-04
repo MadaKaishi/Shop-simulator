@@ -56,7 +56,7 @@ void Supermarket::add_client()
 void Supermarket::move_to_queue(int client_index)
 {
     queue.push_back(aktywni_klienci[client_index]);
-    cout << "Klient: " << aktywni_klienci[client_index].GetName() << " " << aktywni_klienci[client_index].GetSurname() << "przechodzi do kolejki do kasy" << endl;
+    cout << "Klient: " << aktywni_klienci[client_index].GetName() << " " << aktywni_klienci[client_index].GetSurname() << " przechodzi do kolejki do kasy" << endl;
     aktywni_klienci.erase(aktywni_klienci.begin() + client_index);
 }
 
@@ -140,10 +140,10 @@ void Supermarket::choosing_phaze()
     int i = 0;
     for (Klient &c : aktywni_klienci)
     {
-        cout << "lista zak:\n";
-        c.ReadPList();
-        cout << "\nwózek:\n";
-        c.ReadCart();
+        // cout << "lista zak:\n";
+        // c.ReadPList();
+        // cout << "\nwózek:\n";
+        // c.ReadCart();
         string name = get<0>(c.ReadFromPurchaseList()[0]).name;
         int amount = get<1>(c.ReadFromPurchaseList()[0]);
         if (is_there_product(name, amount))
