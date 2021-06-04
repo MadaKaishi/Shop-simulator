@@ -1,0 +1,12 @@
+Co udało nam się zrobićw dniu 04.06.2021:
+-zaprogramować fazę gromadzenia produktów
+-dodawanie klientów do kolejki oraz obsługa błędu braku otwartych kas
+-fazę finalizacji zakupów oraz wychodzenia ze sklepu
+-fazę zamykania oraz otwierania kas zależnie od wymaganych przerw
+
+
+Co trzeba zrobić:
+-zapisywanie do plików
+-poprawa błędów:
+	- przy aktywacji fazy wybierania
+	- poprawa mechanizmu zamykania kas
