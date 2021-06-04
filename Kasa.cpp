@@ -135,3 +135,5 @@ void Kasa::change_Kasa_status()
         cout << "Kasa nr " << getnum() << " jest otwierana" << endl;
     }
 }
+
+//TESTUJEMY
