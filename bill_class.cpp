@@ -13,21 +13,36 @@ int Facture::previous_facture_number = 0;
 Bill::Bill()
 {
     counter_number = 0;
-    cashier_number = 0;
-    number = previous_number;
+    number = previous_number + 1;
     previous_number += 1;
 }
 
-Bill::Bill(int cashier_number, int counter_number, string seller_street, string seller_zip, string seller_town, string seller_name)
+Bill::Bill(int counter_number, vector<tuple<Product, int>> items, string seller_street, string seller_zip, string seller_town, string seller_name)
 {
     this->seller_name = seller_name;
     this->seller_street = seller_street;
     this->seller_town = seller_town;
     this->seller_zip = seller_zip;
     this->counter_number = counter_number;
-    this->cashier_number = cashier_number;
+    this->items = items;
     number = previous_number + 1;
     previous_number += 1;
+}
+
+double Bill::brutto_price()
+{
+    double total_price = 0;
+    int items_list_size = items.size();
+    for (int i = 0; i < items_list_size; i++)
+    {
+        Product item = get<0>(items[i]);
+        double tax;
+        int amount = item.amount;
+        double price = item.price;
+        tax = item.tax_class / 100;
+        total_price += amount * (price + (price * tax));
+    }
+    return total_price;
 }
 
 int Bill::get_number()
@@ -35,49 +50,9 @@ int Bill::get_number()
     return number;
 }
 
-int Bill::get_cashier_number()
-{
-    return cashier_number;
-}
-
 int Bill::get_counter_number()
 {
     return counter_number;
-}
-
-double Bill::netto_price()
-{
-    double total_price = 0;
-    int items_list_size = items_list.size();
-    for (int i = 0; i < items_list_size; i++)
-    {
-        Product *item = &items_list[i];
-        int amount = item->amount;
-        double price = item->price;
-        total_price += amount * price;
-    }
-    return total_price;
-}
-
-double Bill::brutto_price()
-{
-    double total_price = 0;
-    int items_list_size = items_list.size();
-    for (int i = 0; i < items_list_size; i++)
-    {
-        Product *item = &items_list[i];
-        double tax;
-        int amount = item->amount;
-        double price = item->price;
-        tax = item->tax_class / 100;
-        total_price += amount * (price + price * tax);
-    }
-    return total_price;
-}
-
-vector<Product> Bill::get_items_list()
-{
-    return items_list;
 }
 
 void Bill::display_items_list()
@@ -93,22 +68,20 @@ void Bill::display_items_list()
         cout << "-";
     }
     cout << endl;
-    int items_list_size = items_list.size();
+    int items_list_size = items.size();
     for (int i = 0; i < items_list_size; i++)
     {
-        Product *item = &items_list[i];
-        string name;
-        int amount;
+        Product item = get<0>(items[i]);
+        string name = item.name;
+        int amount = get<1>(items[i]);
         double price, total_price, tax;
-        name = item->name;
-        amount = item->amount;
-        tax = item->tax_class / 100;
-        price = item->price + item->price * tax;
+        tax = item.tax_class / 100;
+        price = item.price + item.price * tax;
         total_price = price * amount;
         cout << setw(5) << left << i + 1 << setw(4) << left << "|"
              << setw(34) << left << name << setw(4) << left << "|"
              << setw(9) << right << amount << setw(4) << right << "|"
-             << setw(14) << right << price << setw(4) << right << "|"
+             << setw(14) << right << setprecision(2) << price << setw(4) << right << "|"
              << setw(25) << right << setprecision(2) << total_price << endl;
     }
     for (int i = 0; i < 104; i++)
@@ -120,21 +93,17 @@ void Bill::display_items_list()
 
 void Bill::display_bill()
 {
+    string seller_name = get_seller_name();
+    string town_zip = get_seller_zip() + ", " + get_seller_town();
     cout << "\n\n\n";
     cout << "Bill nr and date: " << get_number() << "  " << get_date() << "\n\n";
-    cout << setw(45) << right << get_seller_name() << endl;
-    cout << setw(45) << right << get_seller_street() << endl;
-    cout << setw(45) << right << get_seller_zip() << ", " << get_seller_town() << "\n";
-    cout << "Cashier number: " << setw(60) << left << get_cashier_number() << "\n";
+    cout << string((80 - get_seller_name().size()) / 2, ' ') << seller_name << endl;
+    cout << string((80 - get_seller_name().size()) / 2, ' ') << get_seller_street() << endl;
+    cout << string((80 - get_seller_name().size()) / 2, ' ') << town_zip << "\n";
     cout << "Counter number: " << setw(60) << left << get_counter_number() << "\n\n";
     display_items_list();
     cout << fixed;
     cout << setw(84) << right << "TOTAL: " << setw(16) << right << setprecision(2) << brutto_price() << " PLN" << endl;
-}
-
-void Bill::set_cashier_number(int new_number)
-{
-    cashier_number = new_number;
 }
 
 void Bill::set_counter_number(int new_number)
@@ -142,31 +111,9 @@ void Bill::set_counter_number(int new_number)
     counter_number = new_number;
 }
 
-void Bill::add_item(string name, int amount, double price, double tax)
-{
-    bool item_added;
-    int lenght = items_list.size();
-    for (int i = 0; i < lenght; i++)
-    {
-        Product *item;
-        item = &items_list[i];
-        if (item->name == name && item->price == price)
-        {
-            int current_amount = item->amount;
-            item->modife_amount(current_amount + amount);
-            item_added = true;
-        }
-    }
-    if (!item_added)
-    {
-        Product new_item(price, tax, name, amount);
-        items_list.push_back(new_item);
-    }
-}
-
 void Bill::remove_item(int item_index)
 {
-    items_list.erase(items_list.begin() + item_index);
+    items.erase(items.begin() + item_index);
 }
 
 string Bill::get_date()
@@ -236,6 +183,23 @@ string Facture::get_buyer_name()
 string Facture::get_place_of_issue()
 {
     return place_of_issue;
+}
+
+Facture::Facture(int counter_number, vector<tuple<Product, int>>, string buyer_street, string buyer_zip, string buyer_town, string buyer_name, string seller_street, string seller_zip, string seller_town, string seller_name)
+{
+    this->seller_name = seller_name;
+    this->seller_street = seller_street;
+    this->seller_town = seller_town;
+    this->seller_zip = seller_zip;
+    this->place_of_issue = seller_town;
+    this->buyer_street = buyer_street;
+    this->buyer_zip = buyer_zip;
+    this->buyer_town = buyer_town;
+    this->buyer_name = buyer_name;
+    this->counter_number = counter_number;
+    this->items = items;
+    facture_number = previous_facture_number + 1;
+    previous_facture_number += 1;
 }
 
 void Facture::display_facture()

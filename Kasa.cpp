@@ -21,9 +21,7 @@ Kasa::Kasa(int n, int cash, bool o)
 {
     num = n;
     money = cash;
-    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-    mt19937 generator(seed);
-    isopen = generator() % 2;
+    isopen = o;
     queue = {};
     tury_pracy = 0;
     tury_przerwy = 0;
@@ -61,28 +59,50 @@ void Kasa::setmoney(int new_money)
 void Kasa::openKasa()
 {
     isopen = true;
-    cout << "Kasa nr" << num << "została otworzona";
 }
 
 void Kasa::closeKasa()
 {
     isopen = false;
-    cout << "Kasa nr" << num << "została zamknięta";
 }
 
-void Kasa::addtoQueue(Klient klient)
+int Kasa::get_tury_pracy()
 {
-    queue.push_back(klient);
+    return tury_pracy;
 }
 
-void Kasa::removefromQueue()
+int Kasa::get_tury_przerwy()
 {
-    queue.pop_front();
+    return tury_przerwy;
 }
 
 void Kasa::increment_tury_pracy()
 {
     tury_pracy++;
+}
+
+bool Kasa::needs_break()
+{
+    if (tury_pracy >= 10)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+bool Kasa::break_ended()
+{
+    if (tury_przerwy >= 5)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void Kasa::clear_tury_pracy()
@@ -98,4 +118,20 @@ void Kasa::increment_tury_przerwy()
 void Kasa::clear_tury_przerwy()
 {
     tury_przerwy = 0;
+}
+
+void Kasa::change_Kasa_status()
+{
+    if (needs_break())
+    {
+        closeKasa();
+        clear_tury_pracy();
+        cout << "Kasa nr " << getnum() << " jest zamykana" << endl;
+    }
+    if (break_ended())
+    {
+        openKasa();
+        clear_tury_przerwy();
+        cout << "Kasa nr " << getnum() << " jest otwierana" << endl;
+    }
 }

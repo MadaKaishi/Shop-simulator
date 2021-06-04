@@ -23,12 +23,17 @@ public:
   void setmoney(int);
   void openKasa();
   void closeKasa();
-  void addtoQueue(Klient);
-  void removefromQueue();
+  //void addtoQueue(Klient);
+  //void removefromQueue();
+  int get_tury_pracy();
+  int get_tury_przerwy();
+  bool break_ended();
+  bool needs_break();
   void increment_tury_pracy();
   void clear_tury_pracy();
   void increment_tury_przerwy();
   void clear_tury_przerwy();
+  void change_Kasa_status();
 };
 
 #endif

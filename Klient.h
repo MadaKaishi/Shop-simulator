@@ -20,9 +20,10 @@ private:
     string adress;
     string post_code;
     string town;
+    int items_amount;
 
 public:
-    Klient(string, string, int, bool, string = "", string = "", string = "");
+    Klient(string, string, int, int, bool, string = "", string = "", string = "");
     ~Klient();
 
     void AddToPurchaseList(Product, int);
@@ -34,11 +35,13 @@ public:
     string GetAdress();
     string GetPostCode();
     string GetTown();
-
+    void RemoveFromPurchaseList();
     int GetMoney();
     bool IsInShop();
-
+    bool WantFacture();
     void GoToCheckout();
+    int GetItemsAmount();
+    void EmptyCart();
 };
 
 #endif
