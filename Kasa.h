@@ -14,16 +14,14 @@ public:
 
   Kasa();
   Kasa(int n, int cash, bool o);
-  ~Kasa();
   int getnum();
   int getmoney();
   bool isKasaopened();
   void setnum(int);
   void setmoney(int);
+  void addmoney(int);
   void openKasa();
   void closeKasa();
-  //void addtoQueue(Klient);
-  //void removefromQueue();
   int get_tury_pracy();
   int get_tury_przerwy();
   bool break_ended();

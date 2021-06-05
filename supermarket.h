@@ -43,6 +43,9 @@ public:
     bool is_there_product(string, int);
     void Start();
     void MakeNewPurchaseList(Klient &k);
+    void FazaWchodzenieWypisz();
+    void FazaWybieraniaWypisz();
+    void FazaKupowaniaWypisz();
 };
 
 #endif

@@ -6,22 +6,22 @@
 #include <sstream>
 #include <string>
 #include <fstream>
+#include <windows.h>
 #include "supermarket.h"
 
 using namespace std;
 
 void Supermarket::entering_phaze()
 {
-    add_client();
     ofstream out("Raport.txt", ios_base::app);
     streambuf *coutbuf = cout.rdbuf();
+    FazaWchodzenieWypisz();
+    add_client();
     cout.rdbuf(out.rdbuf());
-    cout << "Faza wchodzenia klientów do sklepu. \n\n";
     cout << "Ilość klientów w sklepie: " << aktywni_klienci.size() + queue.size() << endl;
     cout << "Ilość otwartych kas: " << get_openedkasy() << endl;
     cout << "\n\n";
     cout.rdbuf(coutbuf);
-    cout << "Faza wchodzenia klientów do sklepu. \n\n";
     cout << "Ilość klientów w sklepie: " << aktywni_klienci.size() + queue.size() << endl;
     cout << "Ilość otwartych kas: " << get_openedkasy() << endl;
     cout << "\n\n";
@@ -31,7 +31,7 @@ void Supermarket::add_kasy()
 {
     for (int i = 0; i < liczba_kas; i++)
     {
-        int num = liczba_kas - i;
+        int num = i + 1;
         int money = abs((random_generator(i) % 10000) + 1000);
         bool isopen = abs(random_generator(i) % 2);
         if (isopen == 1)
@@ -58,6 +58,7 @@ int Supermarket::get_openedkasy()
             i++;
         }
     }
+    opened_kasy = i;
     return opened_kasy;
 }
 
@@ -76,9 +77,6 @@ void Supermarket::add_client()
 
 void Supermarket::move_to_queue(int client_index)
 {
-    ofstream out("Raport.txt", ios_base::app);
-    streambuf *coutbuf = cout.rdbuf();
-    cout.rdbuf(out.rdbuf());
     queue.push_back(aktywni_klienci[client_index]);
     ofstream out("Raport.txt", ios_base::app);
     streambuf *coutbuf = cout.rdbuf();
@@ -160,8 +158,8 @@ bool Supermarket::is_there_product(string name, int number)
 
 void Supermarket::choosing_phaze()
 {
-    cout << "Faza wybierania produktów. \n\n";
-    vector<int> client_to_move_to_queue;
+    FazaWybieraniaWypisz();
+    ofstream out("Raport.txt", ios_base::app);
     string name;
     int amount;
     for (long long unsigned int i = 0; i < aktywni_klienci.size(); i++)
@@ -171,10 +169,20 @@ void Supermarket::choosing_phaze()
         if (is_there_product(name, amount))
         {
             aktywni_klienci[i].AddToCart();
+            ofstream out("Raport.txt", ios_base::app);
+            streambuf *coutbuf = cout.rdbuf();
+            cout.rdbuf(out.rdbuf());
+            cout << aktywni_klienci[i].GetName() << " " << aktywni_klienci[i].GetSurname() << " dodał do koszyka " << amount << " " << name << endl;
+            cout.rdbuf(coutbuf);
             cout << aktywni_klienci[i].GetName() << " " << aktywni_klienci[i].GetSurname() << " dodał do koszyka " << amount << " " << name << endl;
         }
         else
         {
+            ofstream out("Raport.txt", ios_base::app);
+            streambuf *coutbuf = cout.rdbuf();
+            cout.rdbuf(out.rdbuf());
+            cout << "Nie ma wystarczającej ilości danego produktu - " << name << endl;
+            cout.rdbuf(coutbuf);
             cout << "Nie ma wystarczającej ilości danego produktu - " << name << endl;
             aktywni_klienci[i].RemoveFromPurchaseList();
         }
@@ -188,39 +196,111 @@ void Supermarket::choosing_phaze()
 
 void Supermarket::buying_phaze()
 {
-    int i = 0;
-    cout << "Faza kupowania i wychodzenia klientów ze sklepu.\n\n";
-    for (Kasa c : kasy)
+    int j = 0;
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    FazaKupowaniaWypisz();
+
+    for (long long unsigned int i = 0; i < kasy.size(); i++)
     {
+        Kasa &c = kasy[i];
         if (c.isKasaopened())
         {
             c.increment_tury_pracy();
             if (queue.size() > 0)
             {
+                j = 1;
                 Klient *client = &queue.front();
                 if (client->WantFacture() == 1)
                 {
-                    //to co chce fakture
-                    cout << "\nDrukowanie faktury dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
                     Facture f(c.getnum(), client->GetCart(), client->GetAdress(), client->GetPostCode(), client->GetTown(), client->GetName() + " " + client->GetSurname());
-                    f.display_facture();
+                    if (client->GetMoney() >= f.brutto_price())
+                    {
+                        ofstream out("Raport.txt", ios_base::app);
+                        streambuf *coutbuf = cout.rdbuf();
+                        cout.rdbuf(out.rdbuf());
+                        cout << "\nDrukowanie faktury dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
+                        cout.rdbuf(coutbuf);
+                        cout << "\nDrukowanie faktury dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
+                        cout.rdbuf(out.rdbuf());
+                        f.display_facture();
+                        cout.rdbuf(coutbuf);
+                        f.display_facture();
+                        //Sleep(2 * 1000);
+                        client->SubtractMoney(f.brutto_price());
+                        c.addmoney(f.brutto_price());
+                    }
+                    else
+                    {
+                        ofstream out("Raport.txt", ios_base::app);
+                        streambuf *coutbuf = cout.rdbuf();
+                        cout.rdbuf(out.rdbuf());
+                        cout << "Klient: " << client->GetName() << " " << client->GetSurname() << " nie ma wystarczająco pieniędzy\n";
+                        cout.rdbuf(coutbuf);
+                        cout << "Klient: " << client->GetName() << " " << client->GetSurname() << " nie ma wystarczająco pieniędzy\n";
+                        for (long long unsigned int i = 0; i < client->GetCart().size(); i++)
+                        {
+                            tuple<Product, int> item = client->GetCart()[i];
+                            string name = get<0>(item).name;
+                            int amount = get<1>(item);
+                            for (long long unsigned int i = 0; i < produkty.size(); i++)
+                            {
+                                if (name == produkty[i].name)
+                                {
+                                    int current_amount = produkty[i].amount;
+                                    produkty[i].modife_amount(current_amount + amount);
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    //to co chce paragon
-                    cout << "\nDrukowanie paragonu dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
                     Bill b(c.getnum(), client->GetCart());
-                    b.display_bill();
+                    if (client->GetMoney() >= b.brutto_price())
+                    {
+                        ofstream out("Raport.txt", ios_base::app);
+                        streambuf *coutbuf = cout.rdbuf();
+                        cout.rdbuf(out.rdbuf());
+                        cout << "\nDrukowanie paragonu dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
+                        cout.rdbuf(coutbuf);
+                        cout << "\nDrukowanie paragonu dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
+                        cout.rdbuf(out.rdbuf());
+                        b.display_bill();
+                        cout.rdbuf(coutbuf);
+                        b.display_bill();
+                        client->SubtractMoney(b.brutto_price());
+                        c.addmoney(b.brutto_price());
+                        //Sleep(2 * 1000);
+                    }
+                    else
+                    {
+                        ofstream out("Raport.txt", ios_base::app);
+                        streambuf *coutbuf = cout.rdbuf();
+                        cout.rdbuf(out.rdbuf());
+                        cout << "Klient: " << client->GetName() << " " << client->GetSurname() << " nie ma wystarczająco pieniędzy\n";
+                        cout.rdbuf(coutbuf);
+                        cout << "Klient: " << client->GetName() << " " << client->GetSurname() << " nie ma wystarczająco pieniędzy\n";
+                        for (long long unsigned int i = 0; i < client->GetCart().size(); i++)
+                        {
+                            tuple<Product, int> item = client->GetCart()[i];
+                            string name = get<0>(item).name;
+                            int amount = get<1>(item);
+                            for (long long unsigned int i = 0; i < produkty.size(); i++)
+                            {
+                                if (name == produkty[i].name)
+                                {
+                                    int current_amount = produkty[i].amount;
+                                    produkty[i].modife_amount(current_amount + amount);
+                                }
+                            }
+                        }
+                    }
                 }
                 MakeNewPurchaseList(*client);
                 client->EmptyCart();
                 klienci.push_back(*client);
                 queue.pop_front();
-            }
-            else if (i == 0)
-            {
-                cout << "W tej turze nikt nie finalizuje swoich zakupow. \n";
-                i = 1;
             }
         }
         else
@@ -229,6 +309,19 @@ void Supermarket::buying_phaze()
         }
         c.change_Kasa_status();
     }
+    if (j == 0)
+    {
+        ofstream out("Raport.txt", ios_base::app);
+        streambuf *coutbuf = cout.rdbuf();
+        cout.rdbuf(out.rdbuf());
+        cout << "W tej turze nikt nie finalizuje swoich zakupow. \n";
+        cout.rdbuf(coutbuf);
+        cout << "W tej turze nikt nie finalizuje swoich zakupow. \n";
+        j = 1;
+    }
+    cout.rdbuf(out.rdbuf());
+    cout << "\n\n";
+    cout.rdbuf(coutbuf);
     cout << "\n\n";
 }
 
@@ -242,18 +335,59 @@ void Supermarket::MakeNewPurchaseList(Klient &k)
     }
 }
 
+void Supermarket::FazaWchodzenieWypisz()
+{
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+    cout << "Faza wchodzenia klientów do sklepu. \n\n";
+    cout.rdbuf(coutbuf);
+    cout << "Faza wchodzenia klientów do sklepu. \n\n";
+}
+
+void Supermarket::FazaWybieraniaWypisz()
+{
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+    cout << "Faza wybierania produktów. \n\n";
+    cout.rdbuf(coutbuf);
+    cout << "Faza wybierania produktów. \n\n";
+}
+
+void Supermarket::FazaKupowaniaWypisz()
+{
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+    cout << "\n\nFaza kupowania i wychodzenia klientów ze sklepu. \n\n";
+    cout.rdbuf(coutbuf);
+    cout << "Faza kupowania i wychodzenia klientów ze sklepu. \n\n";
+}
+
 void Supermarket::Start()
 {
+    ofstream ofs1;
+    ofs1.open("Raport.txt", ofstream::out | ofstream::trunc);
+    ofs1.close();
     load_products_from_file();
     load_clients_from_file();
     add_kasy();
     int i = 0;
     while (i < liczba_tur)
     {
+        // Sleep(2 * 1000);
+        ofstream out("Raport.txt", ios_base::app);
+        streambuf *coutbuf = cout.rdbuf();
         entering_phaze();
+        // Sleep(2 * 1000);
         choosing_phaze();
+        // Sleep(2 * 1000);
         buying_phaze();
         i = i + 1;
+        cout.rdbuf(out.rdbuf());
+        cout << "Tura nr " << i << " skonczona.\n\n\n";
+        cout.rdbuf(coutbuf);
         cout << "Tura nr " << i << " skonczona.\n\n\n";
     }
 }

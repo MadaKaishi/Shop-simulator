@@ -1,8 +1,8 @@
 #include <iostream>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <list>
+#include <fstream>
 #include <chrono>
 #include <random>
 #include "Kasa.h"
@@ -23,10 +23,6 @@ Kasa::Kasa(int n, int cash, bool o)
     isopen = o;
     tury_pracy = 0;
     tury_przerwy = 0;
-}
-
-Kasa::~Kasa()
-{
 }
 
 int Kasa::getnum()
@@ -54,15 +50,21 @@ void Kasa::setmoney(int new_money)
     money = new_money;
 }
 
+void Kasa::addmoney(int added_money)
+{
+    money += added_money;
+}
+
 void Kasa::openKasa()
 {
-    isopen = true;
+    isopen = 1;
+    clear_tury_przerwy();
 }
 
 void Kasa::closeKasa()
 {
-    isopen = false;
-    cout << "Zamykanie kasy nr " << num << endl;
+    isopen = 0;
+    clear_tury_pracy();
 }
 
 int Kasa::get_tury_pracy()
@@ -82,7 +84,7 @@ void Kasa::increment_tury_pracy()
 
 bool Kasa::needs_break()
 {
-    if (tury_pracy >= 5)
+    if (tury_pracy == 3)
     {
         return 1;
     }
@@ -94,7 +96,7 @@ bool Kasa::needs_break()
 
 bool Kasa::break_ended()
 {
-    if (tury_przerwy >= 3)
+    if (tury_przerwy == 2)
     {
         return 1;
     }
@@ -121,15 +123,12 @@ void Kasa::clear_tury_przerwy()
 
 void Kasa::change_Kasa_status()
 {
-    if (needs_break())
+    if (needs_break() == 1)
     {
         closeKasa();
-        clear_tury_pracy();
     }
-    if (break_ended())
+    else if (break_ended() == 1)
     {
         openKasa();
-        clear_tury_przerwy();
-        cout << "Kasa nr " << getnum() << " jest otwierana" << endl;
     }
 }

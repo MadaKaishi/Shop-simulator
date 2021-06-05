@@ -27,10 +27,8 @@ public:
 
     void AddToPurchaseList(Product, int);
     vector<tuple<Product, int>> ReadFromPurchaseList();
-    void ReadPList();
     void AddToCart();
     vector<tuple<Product, int>> GetCart();
-    void ReadCart();
     string GetAdress();
     string GetPostCode();
     string GetTown();
@@ -40,6 +38,7 @@ public:
     void GoToCheckout();
     int GetItemsAmount();
     void EmptyCart();
+    void SubtractMoney(int);
 };
 
 #endif

@@ -1,0 +1,7 @@
+Co udało nam się zrobić w dniu 05.06.2021:
+-zapisywanie przebiegu programu do pliku oraz wypisywanie go w terminalu z odpowiednim opóźnieniem
+-naprawa mechanizmu zamykania kas
+-obsługa błędu braku posiadania pieniędzy przez klienta podczas zakupów
+
+Co musimy zrobić:
+-Dopracować dokumentację
