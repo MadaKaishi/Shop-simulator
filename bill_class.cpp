@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <cmath>
 #include "bill_class.h"
 #include "product.h"
 
@@ -35,14 +36,21 @@ double Bill::brutto_price()
     int items_list_size = items.size();
     for (int i = 0; i < items_list_size; i++)
     {
-        Product item = get<0>(items[i]);
-        double tax;
-        int amount = get<1>(items[i]);
-        double price = item.price;
-        tax = item.tax_class / 100;
-        total_price += amount * (price + (price * tax));
+        total_price += item_price_gr(i);
     }
-    return total_price;
+    return total_price / 100;
+}
+
+int Bill::item_price_gr(int item_index)
+{
+    int price_gr, tax_int, amount = get<1>(items[item_index]);
+    double tax;
+    Product *product = &get<0>(items[item_index]);
+    price_gr = product->price * amount;
+    tax = price_gr * product->tax_class;
+    tax = tax / 100;
+    tax_int = round(tax);
+    return price_gr + tax_int;
 }
 
 int Bill::get_number()
@@ -63,7 +71,7 @@ void Bill::display_items_list()
          << setw(12) << left << "Quantity:" << setw(4) << left << "|"
          << setw(14) << left << "Unit price:" << setw(4) << left << "|"
          << setw(15) << right << "Total Price:" << endl;
-    for (int i = 0; i < 104; i++)
+    for (int i = 0; i < 96; i++)
     {
         cout << "-";
     }
@@ -71,20 +79,21 @@ void Bill::display_items_list()
     int items_list_size = items.size();
     for (int i = 0; i < items_list_size; i++)
     {
-        Product item = get<0>(items[i]);
-        string name = item.name;
+        Product *item = &get<0>(items[i]);
+        string name = item->name;
         int amount = get<1>(items[i]);
-        double price, total_price, tax;
-        tax = item.tax_class / 100;
-        price = item.price + item.price * tax;
-        total_price = price * amount;
+        double price, total_price;
+        price = item->price;
+        price = price / 100;
+        total_price = item_price_gr(i);
+        total_price = total_price / 100;
         cout << setw(5) << left << i + 1 << setw(4) << left << "|"
              << setw(34) << left << name << setw(4) << left << "|"
              << setw(9) << right << amount << setw(4) << right << "|"
              << setw(14) << right << setprecision(2) << price << setw(4) << right << "|"
-             << setw(25) << right << setprecision(2) << total_price << endl;
+             << setw(18) << right << setprecision(2) << total_price << endl;
     }
-    for (int i = 0; i < 104; i++)
+    for (int i = 0; i < 96; i++)
     {
         cout << "-";
     }
@@ -93,10 +102,10 @@ void Bill::display_items_list()
 
 void Bill::display_bill()
 {
-    string spaces = "                                               ";
+    string spaces = "                                      ";
     string seller_name = get_seller_name();
     string town_zip = get_seller_zip() + ", " + get_seller_town();
-    cout << "\n\n\n";
+    cout << "\n\n";
     cout << "Bill nr and date: " << get_number() << "  " << get_date() << "\n\n";
     cout << spaces << seller_name << endl;
     cout << spaces << get_seller_street() << endl;
@@ -104,7 +113,7 @@ void Bill::display_bill()
     cout << "Counter number: " << setw(60) << left << get_counter_number() << "\n\n";
     display_items_list();
     cout << fixed;
-    cout << setw(84) << right << "TOTAL: " << setw(16) << right << setprecision(2) << brutto_price() << " PLN" << endl;
+    cout << setw(80) << right << "TOTAL: " << setw(12) << right << setprecision(2) << brutto_price() << " PLN" << endl;
 }
 
 void Bill::set_counter_number(int new_number)
@@ -224,10 +233,11 @@ void Facture::display_items_list()
         Product item = get<0>(items[i]);
         string name = item.name;
         int amount = get<1>(items[i]);
-        double unit_price = item.price, brutto_price, netto_price, tax;
-        tax = item.tax_class / 100;
-        netto_price = amount * unit_price;
-        brutto_price = netto_price + netto_price * tax;
+        double unit_price = item.price, brutto_price, netto_price;
+        netto_price = (amount * unit_price) / 100;
+        unit_price = unit_price / 100;
+        brutto_price = item_price_gr(i);
+        brutto_price = brutto_price / 100;
         cout << setw(5) << left << i + 1 << setw(4) << left << "|"
              << setw(30) << left << name << setw(1) << right << "|"
              << setw(11) << right << amount << setw(4) << right << "|"
@@ -245,7 +255,7 @@ void Facture::display_items_list()
 
 void Facture::display_facture()
 {
-    cout << "\n\n\n";
+    cout << "\n\n";
     cout << "Facture nr/date: " << setw(78) << left << get_id() << get_place_of_issue() << " " << get_date() << "\n\n";
     cout << setw(95) << left << "Seller:"
          << "Buyer:" << endl;

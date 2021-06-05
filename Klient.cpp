@@ -9,7 +9,6 @@ Klient::Klient(string n, string s, int m, int itam, bool b, string ad, string po
 {
     items_amount = itam;
     money = m;
-    in_shop = true;
     want_facture = b;
     if (b == true)
     {
@@ -21,7 +20,6 @@ Klient::Klient(string n, string s, int m, int itam, bool b, string ad, string po
 
 Klient::~Klient()
 {
-    in_shop = false;
 }
 
 void Klient::AddToPurchaseList(Product p, int s)
@@ -60,11 +58,6 @@ vector<tuple<Product, int>> Klient::GetCart()
 int Klient::GetMoney()
 {
     return money;
-}
-
-bool Klient::IsInShop()
-{
-    return in_shop;
 }
 
 string Klient::GetAdress()

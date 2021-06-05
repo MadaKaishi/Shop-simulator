@@ -11,7 +11,6 @@ class Kasa
 public:
   int num, money, tury_pracy, tury_przerwy;
   bool isopen;
-  std::list<Klient> queue;
 
   Kasa();
   Kasa(int n, int cash, bool o);

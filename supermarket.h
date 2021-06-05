@@ -7,7 +7,6 @@
 #include <random>
 #include "Klient.h"
 #include "Kasa.h"
-#include "Pracownik.h"
 #include "product.h"
 #include "bill_class.h"
 
@@ -19,7 +18,6 @@ class Supermarket
     vector<Klient> aktywni_klienci;
     list<Klient> queue;
     vector<Kasa> kasy;
-    vector<Pracownik> pracownicy;
     vector<Product> produkty;
     int liczba_kas, liczba_tur;
     int opened_kasy = 0;

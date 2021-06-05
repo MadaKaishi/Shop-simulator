@@ -7,8 +7,7 @@ using namespace std;
 class Product
 {
 public:
-    int amount;
-    double tax_class, price;
+    int amount, tax_class, price;
     string name;
     Product()
     {
@@ -17,7 +16,7 @@ public:
         price = 0;
         name = "";
     }
-    Product(double p, double t, string n, int a = 0)
+    Product(int p, int t, string n, int a = 0)
     {
         amount = a;
         price = p;

@@ -15,7 +15,6 @@ private:
     vector<tuple<Product, int>> listazak;
     vector<tuple<Product, int>> items;
     int money;
-    bool in_shop;
     bool want_facture;
     string adress;
     string post_code;
@@ -37,7 +36,6 @@ public:
     string GetTown();
     void RemoveFromPurchaseList();
     int GetMoney();
-    bool IsInShop();
     bool WantFacture();
     void GoToCheckout();
     int GetItemsAmount();

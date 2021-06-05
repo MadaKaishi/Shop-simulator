@@ -27,6 +27,7 @@ public:
     std::string get_seller_zip();
     std::string get_seller_town();
     std::string get_seller_name();
+    int item_price_gr(int item_index);
     void display_items_list();
     void display_bill();
     void set_cashier_number(int new_number);

@@ -13,8 +13,18 @@ using namespace std;
 void Supermarket::entering_phaze()
 {
     add_client();
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+    cout << "Faza wchodzenia klientów do sklepu. \n\n";
     cout << "Ilość klientów w sklepie: " << aktywni_klienci.size() + queue.size() << endl;
     cout << "Ilość otwartych kas: " << get_openedkasy() << endl;
+    cout << "\n\n";
+    cout.rdbuf(coutbuf);
+    cout << "Faza wchodzenia klientów do sklepu. \n\n";
+    cout << "Ilość klientów w sklepie: " << aktywni_klienci.size() + queue.size() << endl;
+    cout << "Ilość otwartych kas: " << get_openedkasy() << endl;
+    cout << "\n\n";
 }
 
 void Supermarket::add_kasy()
@@ -55,13 +65,26 @@ void Supermarket::add_client()
 {
     int client_index = random_generator(1) % (klienci.size());
     aktywni_klienci.push_back(klienci[client_index]);
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+    cout << "Klient: " << klienci[client_index].GetName() << " " << klienci[client_index].GetSurname() << " wchodzi do sklepu." << endl;
+    cout.rdbuf(coutbuf);
     cout << "Klient: " << klienci[client_index].GetName() << " " << klienci[client_index].GetSurname() << " wchodzi do sklepu." << endl;
     klienci.erase(klienci.begin() + client_index);
 }
 
 void Supermarket::move_to_queue(int client_index)
 {
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
     queue.push_back(aktywni_klienci[client_index]);
+    ofstream out("Raport.txt", ios_base::app);
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+    cout << "Klient: " << aktywni_klienci[client_index].GetName() << " " << aktywni_klienci[client_index].GetSurname() << " przechodzi do kolejki do kasy" << endl;
+    cout.rdbuf(coutbuf);
     cout << "Klient: " << aktywni_klienci[client_index].GetName() << " " << aktywni_klienci[client_index].GetSurname() << " przechodzi do kolejki do kasy" << endl;
     aktywni_klienci.erase(aktywni_klienci.begin() + client_index);
 }
@@ -105,8 +128,7 @@ void Supermarket::load_products_from_file()
         while (getline(file, line))
         {
             string name;
-            double tax, price;
-            int amount;
+            int tax, price, amount;
             std::istringstream iss(line);
             iss >> name >> amount >> tax >> price;
             Product new_product(price, tax, name, amount);
@@ -138,6 +160,7 @@ bool Supermarket::is_there_product(string name, int number)
 
 void Supermarket::choosing_phaze()
 {
+    cout << "Faza wybierania produktów. \n\n";
     vector<int> client_to_move_to_queue;
     string name;
     int amount;
@@ -160,10 +183,13 @@ void Supermarket::choosing_phaze()
             move_to_queue(i);
         }
     }
+    cout << "\n\n";
 }
 
 void Supermarket::buying_phaze()
 {
+    int i = 0;
+    cout << "Faza kupowania i wychodzenia klientów ze sklepu.\n\n";
     for (Kasa c : kasy)
     {
         if (c.isKasaopened())
@@ -175,14 +201,14 @@ void Supermarket::buying_phaze()
                 if (client->WantFacture() == 1)
                 {
                     //to co chce fakture
-                    cout << "Drukowanie faktury dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
+                    cout << "\nDrukowanie faktury dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
                     Facture f(c.getnum(), client->GetCart(), client->GetAdress(), client->GetPostCode(), client->GetTown(), client->GetName() + " " + client->GetSurname());
                     f.display_facture();
                 }
                 else
                 {
                     //to co chce paragon
-                    cout << "Drukowanie paragonu dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
+                    cout << "\nDrukowanie paragonu dla klienta: " << client->GetName() << " " << client->GetSurname() << endl;
                     Bill b(c.getnum(), client->GetCart());
                     b.display_bill();
                 }
@@ -191,12 +217,28 @@ void Supermarket::buying_phaze()
                 klienci.push_back(*client);
                 queue.pop_front();
             }
+            else if (i == 0)
+            {
+                cout << "W tej turze nikt nie finalizuje swoich zakupow. \n";
+                i = 1;
+            }
         }
         else
         {
             c.increment_tury_przerwy();
         }
         c.change_Kasa_status();
+    }
+    cout << "\n\n";
+}
+
+void Supermarket::MakeNewPurchaseList(Klient &k)
+{
+    for (int i = 0; i < k.GetItemsAmount(); i++)
+    {
+        int amount = abs((random_generator(i) % 10)) + 2;
+        int product_index = random_generator(i) % (produkty.size());
+        k.AddToPurchaseList(produkty[product_index], amount);
     }
 }
 
@@ -212,16 +254,6 @@ void Supermarket::Start()
         choosing_phaze();
         buying_phaze();
         i = i + 1;
-        cout << "Tura skonczona: " << i << endl;
-    }
-}
-
-void Supermarket::MakeNewPurchaseList(Klient &k)
-{
-    for (int i = 0; i < k.GetItemsAmount(); i++)
-    {
-        int amount = abs((random_generator(i) % 10)) + 2;
-        int product_index = random_generator(i) % (produkty.size());
-        k.AddToPurchaseList(produkty[product_index], amount);
+        cout << "Tura nr " << i << " skonczona.\n\n\n";
     }
 }

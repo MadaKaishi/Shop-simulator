@@ -13,7 +13,6 @@ Kasa::Kasa()
     num = 0;
     money = 0;
     isopen = 0;
-    queue = {};
     tury_pracy = 0;
     tury_przerwy = 0;
 }
@@ -22,7 +21,6 @@ Kasa::Kasa(int n, int cash, bool o)
     num = n;
     money = cash;
     isopen = o;
-    queue = {};
     tury_pracy = 0;
     tury_przerwy = 0;
 }
