@@ -75,7 +75,7 @@ int Supermarket::random_generator(int k)
 
 void Supermarket::load_clients_from_file()
 {
-    std::ifstream file("test.txt");
+    std::ifstream file("klienci.txt");
     if (file.is_open())
     {
         std::string line;
@@ -98,7 +98,7 @@ void Supermarket::load_clients_from_file()
 
 void Supermarket::load_products_from_file()
 {
-    std::ifstream file("itemtest.txt");
+    std::ifstream file("produkty.txt");
     if (file.is_open())
     {
         std::string line;
