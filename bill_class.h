@@ -23,17 +23,14 @@ public:
     int get_counter_number();
     double brutto_price();
     string get_date();
-    std::string get_seller_street();
-    std::string get_seller_zip();
-    std::string get_seller_town();
-    std::string get_seller_name();
+    string get_seller_street();
+    string get_seller_zip();
+    string get_seller_town();
+    string get_seller_name();
     int item_price_gr(int item_index);
     void display_items_list();
     void display_bill();
-    void set_cashier_number(int new_number);
     void set_counter_number(int new_number);
-    void add_item(string, int, double, double);
-    void remove_item(int item_index);
 };
 
 class Facture : public Bill
@@ -45,12 +42,12 @@ class Facture : public Bill
 public:
     Facture(int counter_number, vector<tuple<Product, int>>, string buyer_street, string buyer_zip, string buyer_town, string buyer_name, string seller_street = "Ziolowa 69", string seller_zip = "00-321", string seller_town = "Warszawa", string seller_name = "Ceplusik");
     int get_facture_number();
-    std::string get_id();
-    std::string get_buyer_street();
-    std::string get_buyer_zip();
-    std::string get_buyer_town();
-    std::string get_buyer_name();
-    std::string get_place_of_issue();
+    string get_id();
+    string get_buyer_street();
+    string get_buyer_zip();
+    string get_buyer_town();
+    string get_buyer_name();
+    string get_place_of_issue();
     void display_facture();
     void display_items_list();
 };

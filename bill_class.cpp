@@ -116,16 +116,6 @@ void Bill::display_bill()
     cout << setw(80) << right << "TOTAL: " << setw(12) << right << setprecision(2) << brutto_price() << " PLN" << endl;
 }
 
-void Bill::set_counter_number(int new_number)
-{
-    counter_number = new_number;
-}
-
-void Bill::remove_item(int item_index)
-{
-    items.erase(items.begin() + item_index);
-}
-
 string Bill::get_date()
 {
     string date;
