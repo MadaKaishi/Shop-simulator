@@ -28,7 +28,7 @@ Andrea Michalak 30 1 0 Szatańska 66 66-666 Diablice
 Monika Jasińska 233 2 0 Szatańska 66 66-666 Diablice
 Florencja Laskowska 102 2 1 Torowa 32 03-144 Warszawa
 Ewa Adamska 444 3 1 Stworzenia 12 87-330 Adamowo
-Mariusz Pudzianowski 707 8 1 Polskogurna 1 40-872 Siłów
+Mariusz Pudzianowski 707707 8 1 Polskogurna 1 40-872 Siłów
 Andrew Krabowski 6942069 4 0 Numeryczna 7 16-430 Książków
 Rafik Brzozowski 3535 3 0 Piosenkarska 32 00-604 Warszawa
 Michalina Miejska 109 4 1 Wiejska 6 99-789 Tarnopol
