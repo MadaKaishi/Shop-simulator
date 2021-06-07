@@ -226,7 +226,7 @@ void Supermarket::buying_phaze()
                         f.display_facture();
                         cout.rdbuf(coutbuf);
                         f.display_facture();
-                        //Sleep(2 * 1000);
+                        Sleep(2 * 1000);
                         client->SubtractMoney(f.brutto_price());
                         c.addmoney(f.brutto_price());
                     }
