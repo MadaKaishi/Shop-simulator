@@ -34,9 +34,10 @@ Rafik Brzozowski 68 3 0 Piosenkarska 32 00-604 Warszawa
 Michalina Miejska 109 4 1 Wiejska 6 99-789 Tarnopol
 Joachim Polski 300 6 0 Niemiecka 2 16-209 Poznań
 Robert Kubica 280 5 1 Szybka 55 32-600 Poznań
-Robert Lewandowski 20000 2 1 Strzelecka 41 40-872 Siłów
+Robert Lewandowski 20000 9 1 Strzelecka 41 40-872 Siłów
 Metod Numeryczny 350 4 1 Szatańska 33 66-666 Diablice
 Krzysztof Bogacki 25 1 0 Droga 88 44-430 Jasnogóra
 Marcin Gortat 2000 4 1 Wysoka 23 00-321 Orlando
 Iga Swiatek 3000 8 1 Tenisowa 31 21-332 Warszawa
 Piotr Skowyrski 500 4 1 Gejmerska 31 33-112 Izakow
+Papa Francesco 3000 6 1 Papieska 23 00-000 Rzym
