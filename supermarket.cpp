@@ -89,6 +89,7 @@ void Supermarket::move_to_queue(int client_index)
 
 int Supermarket::random_generator(int k)
 {
+    Sleep(1);
     unsigned seed = chrono::high_resolution_clock::now().time_since_epoch().count() + k;
     mt19937 generator(seed);
     return generator();
