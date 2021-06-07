@@ -271,7 +271,7 @@ void Supermarket::buying_phaze()
                         b.display_bill();
                         client->SubtractMoney(b.brutto_price());
                         c.addmoney(b.brutto_price());
-                        //Sleep(2 * 1000);
+                        Sleep(2 * 1000);
                     }
                     else
                     {
@@ -376,13 +376,13 @@ void Supermarket::Start()
     int i = 0;
     while (i < liczba_tur)
     {
-        // Sleep(2 * 1000);
+        Sleep(2 * 1000);
         ofstream out("Raport.txt", ios_base::app);
         streambuf *coutbuf = cout.rdbuf();
         entering_phaze();
-        // Sleep(2 * 1000);
+        Sleep(2 * 1000);
         choosing_phaze();
-        // Sleep(2 * 1000);
+        Sleep(2 * 1000);
         buying_phaze();
         i = i + 1;
         cout.rdbuf(out.rdbuf());
